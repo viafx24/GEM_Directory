@@ -2,32 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 
-int largest(int arr[], int n);
+#define NumberRowSokobanLevel  8
+#define NumberColSokobanLevel  4
 
-int main(void)
+void GetMainInfoSokobanFile(int ArrayLevelSokoban[NumberRowSokobanLevel][NumberColSokobanLevel]);
+
+int main()
 {
+int ArrayLevelSokoban[NumberRowSokobanLevel][NumberColSokobanLevel]={0};
 
-	FILE *stream;
-	FILE *stream_2;
-	FILE *stream_3;
+GetMainInfoSokobanFile(ArrayLevelSokoban);
 
-	char str[60];
-	char TailleFichier[60];
-
-	int Height = 0;
-	int Length = 0;
-	int ArrayLength[30];
-	long BeginArray[8]={0};
+GetMapInfo();
 
 
-// first loop to get the correct size of each sokoban and write it in a file.
-	int NumberSokoban = 0;
+return 0;
+}
 
-	stream = fopen("soloban01.txt", "r+");
-	stream_2 = fopen("Level.txt", "w+");
-	stream_3 = fopen("Taille.txt", "w+");
+// cart à rajouter dans les arguments. colonne et fenetre change à chaque event. Compatible SDL?
+void GetMapInfo(int Level, int ArrayLevelSokoban[NumberRowSokobanLevel][NumberColSokobanLevel])
+{
+FILE *stream;
+char str[60];
+stream = fopen("soloban01.txt", "r+");
 
-	if (stream == NULL || stream_2 == NULL || stream_3 == NULL)
+	if (stream == NULL)
 	{
 		printf("Problem with Files\n");
 		exit(1);
@@ -35,9 +34,70 @@ int main(void)
 	else
 	{
 
-		printf("The files  were  opened\n");
+		printf("The file  was opened\n");
+		fseek(stream,ArrayLevelSokoban[Level-1][3] , SEEK_SET );
+		while (fgets(str, 60, stream) != NULL)
+		{
+			if (strlen(str) < 2)
+				break;
 
-		Length = largest(ArrayLength, Height);
+			else
+			{
+				for (i = 0; i < row; i++)
+
+			switch (str[i])
+			{
+			case '0':
+				carte[i][j] = 0;
+				break;
+			case '1':
+				carte[i][j] = 1;
+				break;
+			case '2':
+				carte[i][j] = 2;
+				break;
+			case '3':
+				carte[i][j] = 3;
+				break;
+			case '4':
+				carte[i][j] = 4;
+				break;
+			}
+		}
+	}
+			}
+			
+		}
+
+
+}
+
+
+
+void GetMainInfoSokobanFile(int ArrayLevelSokoban[NumberRowSokobanLevel][NumberColSokobanLevel])
+{
+	FILE *stream;
+
+	char str[60];
+	int Height = 0;
+	int Length = 0;
+	long BeginArray[8]={0};
+
+// first loop to get the correct size of each sokoban and write it in a file.
+	int NumberSokoban = 0;
+	int Compteur=0;
+
+	stream = fopen("soloban01.txt", "r+");
+
+	if (stream == NULL)
+	{
+		printf("Problem with Files\n");
+		exit(1);
+	}
+	else
+	{
+
+		printf("The file  was opened\n");
 
 		while (fgets(str, 60, stream) != NULL)
 		{
@@ -45,42 +105,44 @@ int main(void)
 			{
 				NumberSokoban++;
 				BeginArray[NumberSokoban]=ftell(stream);
-				fputc('\n', stream_2);
-				Length = largest(ArrayLength, Height)-1;
-				fprintf(stream_3, "%d", Length);
-				fputc(' ', stream_3);
-				fprintf(stream_3, "%d", Height);
-				fputc('\n', stream_3);
 				printf("Sokoban Numero %d, longueur %d, hauteur %d, seek %ld\n", NumberSokoban, Length, Height,BeginArray[NumberSokoban-1]);
+				
+				ArrayLevelSokoban[Compteur][0]=NumberSokoban;
+				ArrayLevelSokoban[Compteur][1]=Length;
+				ArrayLevelSokoban[Compteur][2]=Height;
+				ArrayLevelSokoban[Compteur][3]=BeginArray[NumberSokoban-1];ArrayLevelSokoban[1][Compteur];
+				
 				Height = 0;
 				Length = 0;
+				Compteur++;
 			}
 		//	printf("longueur de ligne identique?%d\n",strlen(str));
-			ArrayLength[Height] = strlen(str);
+			Length = strlen(str)-1;
 			Height++;
 		}
 
-		fseek(stream, 2005, SEEK_SET);
-		fgets(str, 60, stream);
-		printf(str);
-
+		// fseek(stream, 2005, SEEK_SET);
+		// fgets(str, 60, stream);
+		// printf(str);
 
 		int err_1 = fclose(stream);
-		int err_2 = fclose(stream_2);
-		int err_3 = fclose(stream_3);
 
-		if (err_1 == 0 && err_2 == 0 && err_3 == 0)
+
+		if (err_1 == 0 )
 		{
-			printf("Files closed");
+			printf("File closed");
 		}
 
 		else
 		{
-			printf("problem closing files");
+			printf("problem closing file");
 		}
 
 	}
 }
+
+
+
 // int NumberSokoban = 0;
 // int Curseur=0;
 
