@@ -16,6 +16,7 @@ int main(void)
 	FILE *stream_3;
 
 	char str[60];
+	char TailleFichier[60];
 
 	int Height = 0;
 	int Length = 0;
@@ -39,15 +40,16 @@ int main(void)
 
 		printf("The files  were  opened\n");
 
+		Length = largest(ArrayLength, Height);
+
 		while (fgets(str, 60, stream) != NULL)
 		{
-
 			if (strlen(str) < 2)
 			{
 				NumberSokoban++;
 				fputc('\n', stream_2);
 
-				Length = largest(ArrayLength, Height);
+				Length = largest(ArrayLength, Height)-1;
 
 				//printf("Longeur Max= %d\n", Length);
 				//printf("Hauteur Max= %d\n", Height);
@@ -63,38 +65,68 @@ int main(void)
 				Height = 0;
 				Length = 0;
 			}
-
-			for (int i = 0; i < strlen(str); i++)
-			{
-				switch (str[i])
-				{
-				case ' ':
-					fputc('0', stream_2);
-					break;
-				case '#':
-					fputc('1', stream_2);
-					break;
-				case '$':
-					fputc('2', stream_2);
-					break;
-				case '.':
-					fputc('3', stream_2);
-					break;
-				case '@':
-					fputc('4', stream_2);
-					break;
-				case '*':
-					fputc('5', stream_2);
-					break;
-				case '+':
-					fputc('6', stream_2);
-					break;
-				}
-			}
-
 			ArrayLength[Height] = strlen(str);
-			//	printf("Longueur %d \n", ArrayLength[Height]);
 			Height++;
+			
+
+
+		}
+
+		int err_1 = fclose(stream);
+		int err_2 = fclose(stream_2);
+		int err_3 = fclose(stream_3);
+
+		if (err_1 == 0 && err_2 == 0 && err_3 == 0)
+		{
+			printf("Files closed");
+		}
+
+		else
+		{
+			printf("problem closing files");
+		}
+
+	}
+
+	stream = fopen("soloban01.txt", "r+");
+	stream_2 = fopen("Level.txt", "w+");
+	stream_3 = fopen("Taille.txt", "r+");
+
+	if (stream == NULL || stream_2 == NULL || stream_3 == NULL)
+	{
+		printf("Problem with Files\n");
+		exit(1);
+	}
+
+	else
+
+	{
+		int Curseur=0;	
+		// fseek(stream_3, Curseur, SEEK_SET );
+		// fgets(TailleFichier, 3, stream_3);
+		// printf("\n");
+		// int Longueur = atoi(TailleFichier);
+		// printf ("Longueur ligne=%d",Longueur);
+
+
+
+
+
+		for (int i=0;i<8;i++)
+		{
+		fseek(stream_3, Curseur, SEEK_SET );
+		fgets(TailleFichier, 3, stream_3);
+		printf("\n");
+		//printf(TailleFichier);
+		int Longueur = atoi(TailleFichier);
+		printf ("Longueur ligne=%d",Longueur);
+		Curseur=Curseur+7;
+		}
+
+		
+		while (fgets(TailleFichier, 60, stream_3) != NULL)	
+		{
+		printf(TailleFichier);
 		}
 
 		int err_1 = fclose(stream);
@@ -114,6 +146,59 @@ int main(void)
 		return 0;
 	}
 }
+
+// 	}
+
+// 			for (int i = 0; i < strlen(str); i++)
+// 			{
+// 				switch (str[i])
+// 				{
+// 				case ' ':
+// 					fputc('0', stream_2);
+// 					break;
+// 				case '#':
+// 					fputc('1', stream_2);
+// 					break;
+// 				case '$':
+// 					fputc('2', stream_2);
+// 					break;
+// 				case '.':
+// 					fputc('3', stream_2);
+// 					break;
+// 				case '@':
+// 					fputc('4', stream_2);
+// 					break;
+// 				case '*':
+// 					fputc('5', stream_2);
+// 					break;
+// 				case '+':
+// 					fputc('6', stream_2);
+// 					break;
+// 				}
+// 			}
+
+// 			ArrayLength[Height] = strlen(str);
+// 			//	printf("Longueur %d \n", ArrayLength[Height]);
+// 			Height++;
+// 		}
+
+// 		int err_1 = fclose(stream);
+// 		int err_2 = fclose(stream_2);
+// 		int err_3 = fclose(stream_3);
+
+// 		if (err_1 == 0 && err_2 == 0 && err_3 == 0)
+// 		{
+// 			printf("Files closed");
+// 		}
+
+// 		else
+// 		{
+// 			printf("problem closing files");
+// 		}
+
+// 		return 0;
+// 	}
+// }
 
 int largest(int arr[], int n)
 {
