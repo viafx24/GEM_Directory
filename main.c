@@ -22,6 +22,8 @@ int main(void)
 	int Length = 0;
 	int ArrayLength[30];
 
+
+// first loop to get the correct size of each sokoban and write it in a file.
 	int NumberSokoban = 0;
 
 	stream = fopen("soloban01.txt", "r+");
@@ -33,9 +35,7 @@ int main(void)
 		printf("Problem with Files\n");
 		exit(1);
 	}
-
 	else
-
 	{
 
 		printf("The files  were  opened\n");
@@ -48,28 +48,17 @@ int main(void)
 			{
 				NumberSokoban++;
 				fputc('\n', stream_2);
-
 				Length = largest(ArrayLength, Height)-1;
-
-				//printf("Longeur Max= %d\n", Length);
-				//printf("Hauteur Max= %d\n", Height);
-
 				fprintf(stream_3, "%d", Length);
 				fputc(' ', stream_3);
 				fprintf(stream_3, "%d", Height);
-				//fputc(Height,stream_3);
 				fputc('\n', stream_3);
-
 				printf("Sokoban Numero %d, longueur %d, hauteur,%d\n", NumberSokoban, Length, Height);
-
 				Height = 0;
 				Length = 0;
 			}
 			ArrayLength[Height] = strlen(str);
 			Height++;
-			
-
-
 		}
 
 		int err_1 = fclose(stream);
@@ -87,6 +76,99 @@ int main(void)
 		}
 
 	}
+
+int NumberSokoban = 0;
+int Curseur=0;
+
+stream = fopen("soloban01.txt", "r+");
+stream_2 = fopen("Level.txt", "w+");
+stream_3 = fopen("Taille.txt", "r+");
+
+	if (stream == NULL || stream_2 == NULL || stream_3 == NULL)
+	{
+		printf("Problem with Files\n");
+		exit(1);
+	}
+	else
+	{
+
+		printf("The files  were  opened\n");
+
+		while (fgets(str, 60, stream) != NULL)
+		{
+			if (strlen(str) < 2)
+			{
+				NumberSokoban++;
+				fputc('\n', stream_2);
+			}
+			else
+			{
+				fseek(stream_3, Curseur, SEEK_SET );
+				fgets(TailleFichier, 3, stream_3);
+				int Longueur = atoi(TailleFichier);
+				int LongueurChaine=strlen(str);
+				if (LongueurChaine<Longueur)
+				{
+					int Difference=Longueur-LongueurChaine;
+					
+				}
+
+
+
+			for (int i = 0; i < Longueur; i++)
+			{
+				switch (str[i])
+				{
+				case ' ':
+					fputc('0', stream_2);
+					break;
+				case '#':
+					fputc('1', stream_2);
+					break;
+				case '$':
+					fputc('2', stream_2);
+					break;
+				case '.':
+					fputc('3', stream_2);
+					break;
+				case '@':
+					fputc('4', stream_2);
+					break;
+				case '*':
+					fputc('5', stream_2);
+					break;
+				case '+':
+					fputc('6', stream_2);
+					break;
+				}
+			}
+
+
+
+
+
+		Curseur=Curseur+7;/* code */
+			}
+			
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	stream = fopen("soloban01.txt", "r+");
 	stream_2 = fopen("Level.txt", "w+");
@@ -123,7 +205,7 @@ int main(void)
 		Curseur=Curseur+7;
 		}
 
-		
+
 		while (fgets(TailleFichier, 60, stream_3) != NULL)	
 		{
 		printf(TailleFichier);
