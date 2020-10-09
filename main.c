@@ -14,7 +14,7 @@ int main()
 
 	GetMainInfoSokobanFile(ArrayLevelSokoban);
 
-	int Level = 1;
+	int Level = 8;
 	int row = ArrayLevelSokoban[Level - 1][2];
 	int col = ArrayLevelSokoban[Level - 1][1];
 	int Curseur = ArrayLevelSokoban[Level - 1][3];
@@ -50,7 +50,7 @@ void GetMapInfo(int **carte, int col, int Curseur)
 		fseek(stream, Curseur, SEEK_SET);
 
 		int i = 0;
-		while (fgets(str, col, stream) != NULL)
+		while (fgets(str, 60, stream) != NULL)
 		{
 			if (strlen(str) < 2)
 				break;
